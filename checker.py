@@ -1,3 +1,9 @@
+# Optional future AI integration (currently inactive)
+from ai_module import RequirementQualityModel
+
+_ai_model = RequirementQualityModel()
+_ai_model.load_model()
+
 def check_requirement(text):
     results = {
         "Clarity": [],
@@ -55,3 +61,5 @@ def check_requirement(text):
         score -= 1
 
     return results, suggestions, max(score, 0)
+
+
