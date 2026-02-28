@@ -27,7 +27,6 @@ class RequirementQualityModel:
         if not self.is_loaded:
             self.load_model()
 
-        # Dummy output (does not affect rule engine)
         return {
             "clarity_score": 0.75,
             "ambiguity_score": 0.70,
