@@ -25,9 +25,9 @@ Input:
 The system should be fast and user-friendly.
 
 Output:
-⚠ Ambiguous terms detected: fast, user-friendly  
-⚠ Weak modal verbs detected: should  
-⚠ No measurable criteria found (no numbers detected)  
+Ambiguous terms detected: fast, user-friendly  
+Weak modal verbs detected: should  
+No measurable criteria found (no numbers detected)  
 
 Quality Score: 4/10
 
@@ -43,6 +43,7 @@ Quality Score: 4/10
 requirements-quality-checker/
 ├── checker.py
 ├── main.py
+├── ai_module.py
 ├── requirements.txt
 └── README.md
 
@@ -53,7 +54,6 @@ The system applies rule-based checks using:
 
 - Predefined ambiguity dictionaries
 - Regular expressions for pattern detection
-- Basic linguistic heuristics
 - Scoring mechanism based on detected issues
 
 This lightweight approach ensures fast execution and ease of extensibility.
@@ -84,8 +84,6 @@ MIT License
 # Requirements Quality Checker
 
 An AI-based analytical system for automated quality evaluation of natural language software requirements.
-
-## Overview
 
 Requirements Quality Checker is a web-based NLP system that performs structured quality assessment of software requirement statements. The system integrates transformer-based contextual embeddings with modular evaluation logic to analyze clarity, ambiguity, consistency, and semantic similarity.
 
