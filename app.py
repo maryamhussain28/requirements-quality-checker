@@ -216,87 +216,87 @@ if run:
         st.markdown("## Executive Evaluation Summary")
 
         st.markdown(f"""
-<div style="
-    display:flex;
-    justify-content:space-between;
-    gap:20px;
-    margin-top:10px;
-    flex-wrap:wrap;
-">
+        <div style="
+            display:flex;
+            justify-content:space-between;
+            gap:20px;
+            margin-top:10px;
+            flex-wrap:wrap;
+        ">
 
-    <div style="
-        flex:1;
-        min-width:200px;
-        padding:18px;
-        border-radius:14px;
-        background:rgba(0,0,0,0.05);
-    ">
-        <div style="font-size:12px; opacity:0.6;">Quality Classification</div>
-        <div style="font-size:20px; font-weight:600; margin-top:4px;">
-            {classification}
+            <div style="
+                flex:1;
+                min-width:200px;
+                padding:18px;
+                border-radius:14px;
+                background:rgba(0,0,0,0.05);
+            ">
+                <div style="font-size:12px; opacity:0.6;">Quality Classification</div>
+                <div style="font-size:20px; font-weight:600; margin-top:4px;">
+                    {classification}
+                </div>
+            </div>
+
+            <div style="
+                flex:1;
+                min-width:200px;
+                padding:18px;
+                border-radius:14px;
+                background:rgba(0,0,0,0.05);
+            ">
+                <div style="font-size:12px; opacity:0.6;">Risk Level</div>
+                <div style="font-size:20px; font-weight:600; margin-top:4px;">
+                    {risk}
+                </div>
+            </div>
+
+            <div style="
+                flex:1;
+                min-width:200px;
+                padding:18px;
+                border-radius:14px;
+                background:rgba(0,0,0,0.05);
+            ">
+                <div style="font-size:12px; opacity:0.6;">IEEE Compliance</div>
+                <div style="font-size:20px; font-weight:600; margin-top:4px;">
+                    {ieee_compliance}%
+                </div>
+            </div>
+
+            <div style="
+                flex:1;
+                min-width:200px;
+                padding:18px;
+                border-radius:14px;
+                background:rgba(0,0,0,0.05);
+            ">
+                <div style="font-size:12px; opacity:0.6;">Recommendation</div>
+                <div style="font-size:20px; font-weight:600; margin-top:4px;">
+                    {recommendation}
+                </div>
+            </div>
+
         </div>
-    </div>
-
-    <div style="
-        flex:1;
-        min-width:200px;
-        padding:18px;
-        border-radius:14px;
-        background:rgba(0,0,0,0.05);
-    ">
-        <div style="font-size:12px; opacity:0.6;">Risk Level</div>
-        <div style="font-size:20px; font-weight:600; margin-top:4px;">
-            {risk}
-        </div>
-    </div>
-
-    <div style="
-        flex:1;
-        min-width:200px;
-        padding:18px;
-        border-radius:14px;
-        background:rgba(0,0,0,0.05);
-    ">
-        <div style="font-size:12px; opacity:0.6;">IEEE Compliance</div>
-        <div style="font-size:20px; font-weight:600; margin-top:4px;">
-            {ieee_compliance}%
-        </div>
-    </div>
-
-    <div style="
-        flex:1;
-        min-width:200px;
-        padding:18px;
-        border-radius:14px;
-        background:rgba(0,0,0,0.05);
-    ">
-        <div style="font-size:12px; opacity:0.6;">Recommendation</div>
-        <div style="font-size:20px; font-weight:600; margin-top:4px;">
-            {recommendation}
-        </div>
-    </div>
-
-</div>
-""", unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
 
         st.markdown(
-            f"""
-            <div style="
-                margin-top:15px;
-                padding:10px 18px;
-                border-radius:25px;
-                background-color:{risk_color};
-                color:white;
-                font-weight:600;
-                display:inline-block;">
-                Overall Risk Level: {risk}
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
+                    f"""
+                    <div style="
+                        margin-top:15px;
+                        padding:10px 18px;
+                        border-radius:25px;
+                        background-color:{risk_color};
+                        color:white;
+                        font-weight:600;
+                        display:inline-block;">
+                        Overall Risk Level: {risk}
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
 
         st.markdown("---")
-
+        
         # --------------------------------------------------
         # QUALITY ATTRIBUTE BREAKDOWN
         # --------------------------------------------------
