@@ -164,86 +164,28 @@ if run:
         # EXECUTIVE DECISION ENGINE
         # --------------------------------------------------
 
-        if score >= 8:
-            classification = "Production-Ready"
-            risk = "Low"
-            recommendation = "Approve"
-            risk_color = "#22c55e"
-        elif score >= 5:
-            classification = "Acceptable with Revisions"
-            risk = "Medium"
-            recommendation = "Revise Before Approval"
-            risk_color = "#f59e0b"
-        else:
-            classification = "High Risk Requirement"
-            risk = "High"
-            recommendation = "Reject"
-            risk_color = "#ef4444"
-
-        ieee_compliance = int((score / 10) * 100)
-
         st.markdown("### Executive Evaluation Summary")
 
-        card_bg = "rgba(255,255,255,0.06)" if st.session_state.dark_mode else "rgba(0,0,0,0.04)"
+        
+        # --------------------------------------------st.markdown("### Executive Evaluation Summary")
 
-        st.markdown(f"""
-        <div style="
-            display:flex;
-            gap:20px;
-            margin-top:15px;
-            flex-wrap:wrap;
-        ">
+        colA, colB, colC, colD = st.columns(4)
 
-            <div style="flex:1; min-width:220px; padding:22px; border-radius:16px; background:{card_bg};">
-                <div style="font-size:12px; opacity:0.65;">Quality Classification</div>
-                <div style="font-size:18px; font-weight:600; margin-top:6px;">
-                    {classification}
-                </div>
-            </div>
+        with colA:
+            st.markdown("**Quality Classification**")
+            st.write(classification)
 
-            <div style="flex:1; min-width:220px; padding:22px; border-radius:16px; background:{card_bg};">
-                <div style="font-size:12px; opacity:0.65;">Risk Level</div>
-                <div style="font-size:18px; font-weight:600; margin-top:6px;">
-                    {risk}
-                </div>
-            </div>
+        with colB:
+            st.markdown("**Risk Level**")
+            st.write(risk)
 
-            <div style="flex:1; min-width:220px; padding:22px; border-radius:16px; background:{card_bg};">
-                <div style="font-size:12px; opacity:0.65;">IEEE Compliance</div>
-                <div style="font-size:18px; font-weight:600; margin-top:6px;">
-                    {ieee_compliance}%
-                </div>
-            </div>
+        with colC:
+            st.markdown("**IEEE Compliance**")
+            st.write(f"{ieee_compliance}%")
 
-            <div style="flex:1; min-width:220px; padding:22px; border-radius:16px; background:{card_bg};">
-                <div style="font-size:12px; opacity:0.65;">Recommendation</div>
-                <div style="font-size:18px; font-weight:600; margin-top:6px;">
-                    {recommendation}
-                </div>
-            </div>
-
-        </div>
-        """, unsafe_allow_html=True)
-
-        st.markdown(
-            f"""
-            <div style="
-                margin-top:18px;
-                padding:10px 20px;
-                border-radius:30px;
-                background-color:{risk_color};
-                color:white;
-                font-weight:600;
-                display:inline-block;">
-                Overall Risk Level: {risk}
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
-
-        st.markdown("---")
-
-        # --------------------------------------------------
+        with colD:
+            st.markdown("**Recommendation**")
+            st.write(recommendation)
         # QUALITY BREAKDOWN
         # --------------------------------------------------
 
