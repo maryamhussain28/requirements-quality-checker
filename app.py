@@ -187,20 +187,28 @@ if run:
         ieee_compliance = int((score / 10) * 100)
 
         st.markdown("## Executive Evaluation Summary")
+        if st.session_state.dark_mode:
+         executive_text_color = "#f1f5f9"
+        else:
+         executive_text_color = "#0f172a"
 
         colA, colB, colC, colD = st.columns(4)
 
-        with colA:
-            st.metric("Quality Classification", classification)
+    with colA:
+        st.markdown(f"<span style='color:{executive_text_color}; font-weight:600;'>Quality Classification</span>", unsafe_allow_html=True)
+        st.markdown(f"<span style='color:{executive_text_color}; font-size:24px;'>{classification}</span>", unsafe_allow_html=True)
 
-        with colB:
-            st.metric("Risk Level", risk)
+    with colB:
+        st.markdown(f"<span style='color:{executive_text_color}; font-weight:600;'>Risk Level</span>", unsafe_allow_html=True)
+        st.markdown(f"<span style='color:{executive_text_color}; font-size:24px;'>{risk}</span>", unsafe_allow_html=True)
 
-        with colC:
-            st.metric("IEEE Compliance", f"{ieee_compliance}%")
+    with colC:
+        st.markdown(f"<span style='color:{executive_text_color}; font-weight:600;'>IEEE Compliance</span>", unsafe_allow_html=True)
+        st.markdown(f"<span style='color:{executive_text_color}; font-size:24px;'>{ieee_compliance}%</span>", unsafe_allow_html=True)
 
-        with colD:
-            st.metric("Recommendation", recommendation)
+    with colD:
+        st.markdown(f"<span style='color:{executive_text_color}; font-weight:600;'>Recommendation</span>", unsafe_allow_html=True)
+        st.markdown(f"<span style='color:{executive_text_color}; font-size:24px;'>{recommendation}</span>", unsafe_allow_html=True)
 
         st.markdown(
             f"""
@@ -209,7 +217,7 @@ if run:
                 padding:10px 18px;
                 border-radius:25px;
                 background-color:{risk_color};
-                color:brown;
+                color:white;
                 font-weight:600;
                 display:inline-block;">
                 Overall Risk Level: {risk}
