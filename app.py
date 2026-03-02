@@ -6,95 +6,137 @@ import plotly.graph_objects as go
 # CONFIG
 # --------------------------------------------------
 
-st.set_page_config(page_title="ReqQuality Pro", layout="wide")
+st.set_page_config(
+    page_title="ReqQuality Pro",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 
 # --------------------------------------------------
-# SESSION STATE (History)
+# SESSION STATE
 # --------------------------------------------------
+
+if "dark_mode" not in st.session_state:
+    st.session_state.dark_mode = False
+
+if "authenticated" not in st.session_state:
+    st.session_state.authenticated = False
 
 if "history" not in st.session_state:
     st.session_state.history = []
 
 # --------------------------------------------------
+# THEME SYSTEM (FUNCTIONAL)
+# --------------------------------------------------
+
+def apply_theme():
+    if st.session_state.dark_mode:
+        bg = "#0f172a"
+        card = "#1e293b"
+        text = "#f1f5f9"
+        border = "#334155"
+    else:
+        bg = "#f8fafc"
+        card = "#ffffff"
+        text = "#0f172a"
+        border = "#e5e7eb"
+
+    st.markdown(f"""
+    <style>
+    .stApp {{
+        background-color: {bg};
+        color: {text};
+    }}
+    .section-card {{
+        padding: 22px;
+        border-radius: 16px;
+        background-color: {card};
+        border: 1px solid {border};
+        margin-bottom: 20px;
+    }}
+    .main-title {{
+        font-size: 42px;
+        font-weight: 700;
+    }}
+    .subtitle {{
+        font-size: 18px;
+        color: #64748b;
+    }}
+    .badge {{
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 600;
+        display: inline-block;
+    }}
+    </style>
+    """, unsafe_allow_html=True)
+
+apply_theme()
+
+# --------------------------------------------------
 # SIDEBAR
 # --------------------------------------------------
 
-st.sidebar.title("ReqQuality Pro")
+with st.sidebar:
 
-dark_mode = st.sidebar.toggle("🌙 Dark Mode")
+    st.markdown("## ReqQuality Pro")
 
-st.sidebar.divider()
+    st.toggle("🌙 Dark Mode", key="dark_mode")
 
-st.sidebar.title("Analysis Settings")
-sensitivity = st.sidebar.slider("Strictness Level", 1, 5, 3)
+    st.divider()
 
-st.sidebar.divider()
+    auth_tabs = st.tabs(["Sign In", "Sign Up"])
 
-st.sidebar.title("📜 History")
+    with auth_tabs[0]:
+        email = st.text_input("Email")
+        password = st.text_input("Password", type="password")
+        if st.button("Login"):
+            st.session_state.authenticated = True
 
-if st.session_state.history:
-    for item in st.session_state.history[-5:]:
-        st.sidebar.write(f"• {item[:40]}...")
-else:
-    st.sidebar.write("No previous analyses.")
+    with auth_tabs[1]:
+        name = st.text_input("Full Name")
+        email_new = st.text_input("Email ")
+        password_new = st.text_input("Password ", type="password")
+        if st.button("Create Account"):
+            st.session_state.authenticated = True
 
-st.sidebar.divider()
+    st.divider()
 
-st.sidebar.markdown("### 🚀 Upgrade to Pro")
-st.sidebar.info("""
-Pro version includes:
-- AI-powered rewriting
-- Batch document analysis
-- Exportable PDF reports
-- Advanced semantic clustering
-""")
+    st.markdown("### Platform Overview")
+    st.write("""
+    • IEEE 29148 Evaluation  
+    • Hybrid Rule + AI Signals  
+    • Interactive Dashboard  
+    • Research Prototype  
+    """)
 
-st.sidebar.button("Upgrade Now")
+    st.divider()
 
-# --------------------------------------------------
-# THEME STYLING
-# --------------------------------------------------
+    st.markdown("### Recent Analyses")
+    if st.session_state.history:
+        for item in st.session_state.history[-5:]:
+            st.write(f"• {item[:35]}...")
+    else:
+        st.caption("No history yet.")
 
-if dark_mode:
-    bg_color = "#0f172a"
-    text_color = "#f1f5f9"
-    card_color = "#1e293b"
-else:
-    bg_color = "#f8fafc"
-    text_color = "#0f172a"
-    card_color = "#ffffff"
+    st.divider()
 
-st.markdown(f"""
-<style>
-body {{
-    background-color: {bg_color};
-    color: {text_color};
-}}
-.big-title {{
-    font-size: 40px;
-    font-weight: 700;
-}}
-.section {{
-    padding: 20px;
-    border-radius: 12px;
-    background-color: {card_color};
-    margin-bottom: 20px;
-}}
-.badge {{
-    padding: 8px 14px;
-    border-radius: 20px;
-    font-size: 14px;
-    font-weight: 600;
-}}
-</style>
-""", unsafe_allow_html=True)
+    st.markdown("### 🚀 Upgrade to Pro")
+    st.info("""
+    - Batch Requirement Analysis  
+    - Advanced Semantic Modeling  
+    - Document Upload Support  
+    - Exportable Reports  
+    """)
+    st.button("Request Pro Access")
 
 # --------------------------------------------------
 # HEADER
 # --------------------------------------------------
 
-st.markdown('<div class="big-title">ReqQuality Pro</div>', unsafe_allow_html=True)
-st.caption("AI-Enhanced Requirements Quality Evaluation Platform")
+st.markdown('<div class="main-title">ReqQuality Pro</div>', unsafe_allow_html=True)
+st.markdown('<div class="subtitle">AI-Enhanced Requirements Quality Evaluation Platform</div>', unsafe_allow_html=True)
 
 st.markdown("---")
 
@@ -102,31 +144,39 @@ st.markdown("---")
 # INPUT
 # --------------------------------------------------
 
-st.markdown("### Requirement Input")
-requirement = st.text_area("", height=150)
+col1, col2 = st.columns([3,1])
 
-analyze = st.button("Run Analysis")
+with col1:
+    requirement = st.text_area(
+        "Enter Requirement Statement",
+        height=160,
+        placeholder="The system shall respond within 2 seconds to login requests."
+    )
+
+with col2:
+    strictness = st.slider("Evaluation Strictness", 1, 5, 3)
+    run = st.button("Run Analysis", use_container_width=True)
 
 # --------------------------------------------------
 # ANALYSIS
 # --------------------------------------------------
 
-if analyze:
+if run:
 
-    if requirement.strip() == "":
+    if not requirement.strip():
         st.warning("Please enter a requirement statement.")
     else:
 
         results, suggestions, score = check_requirement(requirement)
-
         st.session_state.history.append(requirement)
 
-        st.markdown("## 📊 Quality Analysis")
+        st.markdown("## Quality Attribute Breakdown")
 
-        cols = st.columns(2)
+        colA, colB = st.columns(2)
 
         for i, (category, issues) in enumerate(results.items()):
-            with cols[i % 2]:
+            column = colA if i % 2 == 0 else colB
+            with column:
                 st.markdown(f"### {category}")
                 if issues:
                     for issue in issues:
@@ -136,9 +186,7 @@ if analyze:
 
         st.markdown("---")
 
-        # ---------------- SCORE METER ----------------
-
-        st.markdown("## 📈 Overall Quality Score")
+        # ---------------- GAUGE ----------------
 
         fig = go.Figure(go.Indicator(
             mode="gauge+number",
@@ -159,16 +207,11 @@ if analyze:
 
         # ---------------- CONFIDENCE BADGE ----------------
 
-        confidence = 80 + score
-        if confidence > 95:
-            badge_color = "#10b981"
-        elif confidence > 85:
-            badge_color = "#f59e0b"
-        else:
-            badge_color = "#ef4444"
+        confidence = 85 + score
+        badge_color = "#10b981" if confidence > 90 else "#f59e0b"
 
         st.markdown(
-            f'<div class="badge" style="background-color:{badge_color};color:white;">AI Confidence: {confidence}%</div>',
+            f'<div class="badge" style="background-color:{badge_color};color:white;">Model Confidence: {confidence}%</div>',
             unsafe_allow_html=True
         )
 
@@ -176,22 +219,22 @@ if analyze:
 
         # ---------------- IEEE GRID ----------------
 
-        st.markdown("## 📘 IEEE 29148 Quality Mapping")
+        st.markdown("## IEEE 29148 Attribute Mapping")
 
-        ieee_cols = st.columns(4)
+        grid_cols = st.columns(4)
         attributes = ["Clarity", "Unambiguity", "Verifiability", "Atomicity"]
 
         for i, attr in enumerate(attributes):
             if results[attr]:
-                ieee_cols[i].error(attr)
+                grid_cols[i].error(attr)
             else:
-                ieee_cols[i].success(attr)
+                grid_cols[i].success(attr)
 
         st.markdown("---")
 
         # ---------------- SUGGESTIONS ----------------
 
-        st.markdown("## 💡 Improvement Suggestions")
+        st.markdown("## Improvement Recommendations")
 
         if suggestions:
             for s in suggestions:
@@ -204,14 +247,11 @@ if analyze:
 # --------------------------------------------------
 
 st.markdown("---")
-st.markdown("### 📚 Research Context")
+st.markdown("### Research Context")
 
 st.info("""
-This prototype draws inspiration from IEEE 29148 standard for
-requirements specification quality attributes and explores
-hybrid rule-based and AI-assisted evaluation techniques
-within Software Engineering for AI research.
+This platform operationalizes requirement quality principles inspired by IEEE 29148
+and explores hybrid AI-assisted validation approaches within Software Engineering for AI research.
 """)
 
-st.markdown("---")
-st.caption("ReqQuality Pro v2.0 | Research Prototype | Software Engineering & AI Systems")
+st.caption("ReqQuality Pro v4.0 | Research Prototype | Software Engineering & AI Systems")
