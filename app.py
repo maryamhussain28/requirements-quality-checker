@@ -30,13 +30,11 @@ def apply_theme():
     if st.session_state.dark_mode:
         bg = "#0b1120"
         card = "rgba(30, 41, 59, 0.7)"
-        text = "#f1f5f9"
         border = "#334155"
         hero_gradient = "linear-gradient(90deg,#0f172a,#1e293b)"
     else:
         bg = "#f8fafc"
         card = "rgba(255,255,255,0.7)"
-        text = "#0f172a"
         border = "#e2e8f0"
         hero_gradient = "linear-gradient(90deg,#2563eb,#1d4ed8)"
 
@@ -44,7 +42,6 @@ def apply_theme():
     <style>
     .stApp {{
         background-color: {bg};
-        color: {text};
     }}
 
     .hero {{
@@ -81,10 +78,23 @@ def apply_theme():
         font-size: 14px;
         display: inline-block;
     }}
+
+    /* -------- FIX METRIC SIZE -------- */
+
+    div[data-testid="stMetricValue"] {{
+        font-size: 26px !important;
+        font-weight: 600 !important;
+    }}
+
+    div[data-testid="stMetricLabel"] {{
+        font-size: 13px !important;
+        opacity: 0.7;
+    }}
+
     </style>
     """, unsafe_allow_html=True)
 
-apply_theme()
+#apply_theme()
 
 # --------------------------------------------------
 # SIDEBAR
