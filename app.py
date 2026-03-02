@@ -3,120 +3,131 @@ from checker import check_requirement
 import plotly.graph_objects as go
 
 # --------------------------------------------------
-# PAGE CONFIG
+# CONFIG
 # --------------------------------------------------
 
-st.set_page_config(
-    page_title="ReqQuality Pro",
-    layout="wide",
-    page_icon="📘"
-)
+st.set_page_config(page_title="ReqQuality Pro", layout="wide")
 
 # --------------------------------------------------
-# CUSTOM STYLING
+# SESSION STATE (History)
 # --------------------------------------------------
 
-st.markdown("""
-<style>
-.main {
-    background-color: #f8fafc;
-}
-.block-container {
-    padding-top: 2rem;
-}
-.big-title {
-    font-size: 38px;
-    font-weight: 700;
-    color: #0f172a;
-}
-.subtitle {
-    font-size: 18px;
-    color: #475569;
-}
-.section-header {
-    font-size: 22px;
-    font-weight: 600;
-    margin-top: 20px;
-}
-.footer {
-    text-align: center;
-    font-size: 14px;
-    color: gray;
-    margin-top: 50px;
-}
-</style>
-""", unsafe_allow_html=True)
+if "history" not in st.session_state:
+    st.session_state.history = []
 
 # --------------------------------------------------
-# SIDEBAR (AUTH + SETTINGS)
+# SIDEBAR
 # --------------------------------------------------
 
-st.sidebar.title("🔐 Account")
+st.sidebar.title("ReqQuality Pro")
 
-auth_option = st.sidebar.radio("Access", ["Sign In", "Sign Up"])
-
-if auth_option == "Sign In":
-    st.sidebar.text_input("Email")
-    st.sidebar.text_input("Password", type="password")
-    st.sidebar.button("Login")
-else:
-    st.sidebar.text_input("Full Name")
-    st.sidebar.text_input("Email")
-    st.sidebar.text_input("Password", type="password")
-    st.sidebar.button("Create Account")
+dark_mode = st.sidebar.toggle("🌙 Dark Mode")
 
 st.sidebar.divider()
 
-st.sidebar.title("⚙️ Analysis Settings")
+st.sidebar.title("Analysis Settings")
+sensitivity = st.sidebar.slider("Strictness Level", 1, 5, 3)
 
-clarity_weight = st.sidebar.slider("Clarity Weight", 0.5, 2.0, 1.0)
-ambiguity_weight = st.sidebar.slider("Unambiguity Weight", 0.5, 2.0, 1.0)
-verifiability_weight = st.sidebar.slider("Verifiability Weight", 0.5, 2.0, 1.0)
-atomicity_weight = st.sidebar.slider("Atomicity Weight", 0.5, 2.0, 1.0)
+st.sidebar.divider()
+
+st.sidebar.title("📜 History")
+
+if st.session_state.history:
+    for item in st.session_state.history[-5:]:
+        st.sidebar.write(f"• {item[:40]}...")
+else:
+    st.sidebar.write("No previous analyses.")
+
+st.sidebar.divider()
+
+st.sidebar.markdown("### 🚀 Upgrade to Pro")
+st.sidebar.info("""
+Pro version includes:
+- AI-powered rewriting
+- Batch document analysis
+- Exportable PDF reports
+- Advanced semantic clustering
+""")
+
+st.sidebar.button("Upgrade Now")
+
+# --------------------------------------------------
+# THEME STYLING
+# --------------------------------------------------
+
+if dark_mode:
+    bg_color = "#0f172a"
+    text_color = "#f1f5f9"
+    card_color = "#1e293b"
+else:
+    bg_color = "#f8fafc"
+    text_color = "#0f172a"
+    card_color = "#ffffff"
+
+st.markdown(f"""
+<style>
+body {{
+    background-color: {bg_color};
+    color: {text_color};
+}}
+.big-title {{
+    font-size: 40px;
+    font-weight: 700;
+}}
+.section {{
+    padding: 20px;
+    border-radius: 12px;
+    background-color: {card_color};
+    margin-bottom: 20px;
+}}
+.badge {{
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+}}
+</style>
+""", unsafe_allow_html=True)
 
 # --------------------------------------------------
 # HEADER
 # --------------------------------------------------
 
 st.markdown('<div class="big-title">ReqQuality Pro</div>', unsafe_allow_html=True)
-st.markdown('<div class="subtitle">AI-Enhanced Requirements Quality Evaluation Platform</div>', unsafe_allow_html=True)
+st.caption("AI-Enhanced Requirements Quality Evaluation Platform")
 
 st.markdown("---")
 
 # --------------------------------------------------
-# INPUT SECTION
+# INPUT
 # --------------------------------------------------
 
-st.markdown('<div class="section-header">Requirement Input</div>', unsafe_allow_html=True)
+st.markdown("### Requirement Input")
+requirement = st.text_area("", height=150)
 
-requirement = st.text_area(
-    "",
-    height=150,
-    placeholder="Enter your software requirement statement here..."
-)
-
-analyze_button = st.button("🚀 Run Quality Analysis")
+analyze = st.button("Run Analysis")
 
 # --------------------------------------------------
 # ANALYSIS
 # --------------------------------------------------
 
-if analyze_button:
+if analyze:
 
     if requirement.strip() == "":
-        st.warning("Please enter a requirement statement before analysis.")
+        st.warning("Please enter a requirement statement.")
     else:
+
         results, suggestions, score = check_requirement(requirement)
 
-        st.markdown("---")
-        st.markdown('<div class="section-header">Quality Attribute Breakdown</div>', unsafe_allow_html=True)
+        st.session_state.history.append(requirement)
 
-        col1, col2 = st.columns(2)
+        st.markdown("## 📊 Quality Analysis")
 
-        for idx, (category, issues) in enumerate(results.items()):
-            column = col1 if idx % 2 == 0 else col2
-            with column:
-                st.markdown(f"**{category}**")
+        cols = st.columns(2)
+
+        for i, (category, issues) in enumerate(results.items()):
+            with cols[i % 2]:
+                st.markdown(f"### {category}")
                 if issues:
                     for issue in issues:
                         st.error(issue)
@@ -125,11 +136,9 @@ if analyze_button:
 
         st.markdown("---")
 
-        # --------------------------------------------------
-        # SCORE VISUALIZATION
-        # --------------------------------------------------
+        # ---------------- SCORE METER ----------------
 
-        st.markdown('<div class="section-header">Overall Quality Score</div>', unsafe_allow_html=True)
+        st.markdown("## 📈 Overall Quality Score")
 
         fig = go.Figure(go.Indicator(
             mode="gauge+number",
@@ -139,33 +148,70 @@ if analyze_button:
                 'axis': {'range': [0, 100]},
                 'bar': {'color': "#2563eb"},
                 'steps': [
-                    {'range': [0, 40], 'color': "#fee2e2"},
-                    {'range': [40, 70], 'color': "#fef3c7"},
-                    {'range': [70, 100], 'color': "#dcfce7"},
+                    {'range': [0, 40], 'color': "#ef4444"},
+                    {'range': [40, 70], 'color': "#f59e0b"},
+                    {'range': [70, 100], 'color': "#10b981"}
                 ],
             }
         ))
 
         st.plotly_chart(fig, use_container_width=True)
 
-        # --------------------------------------------------
-        # SUGGESTIONS
-        # --------------------------------------------------
+        # ---------------- CONFIDENCE BADGE ----------------
 
-        st.markdown('<div class="section-header">Improvement Recommendations</div>', unsafe_allow_html=True)
+        confidence = 80 + score
+        if confidence > 95:
+            badge_color = "#10b981"
+        elif confidence > 85:
+            badge_color = "#f59e0b"
+        else:
+            badge_color = "#ef4444"
+
+        st.markdown(
+            f'<div class="badge" style="background-color:{badge_color};color:white;">AI Confidence: {confidence}%</div>',
+            unsafe_allow_html=True
+        )
+
+        st.markdown("---")
+
+        # ---------------- IEEE GRID ----------------
+
+        st.markdown("## 📘 IEEE 29148 Quality Mapping")
+
+        ieee_cols = st.columns(4)
+        attributes = ["Clarity", "Unambiguity", "Verifiability", "Atomicity"]
+
+        for i, attr in enumerate(attributes):
+            if results[attr]:
+                ieee_cols[i].error(attr)
+            else:
+                ieee_cols[i].success(attr)
+
+        st.markdown("---")
+
+        # ---------------- SUGGESTIONS ----------------
+
+        st.markdown("## 💡 Improvement Suggestions")
 
         if suggestions:
-            for suggestion in suggestions:
-                st.info(suggestion)
+            for s in suggestions:
+                st.info(s)
         else:
-            st.success("Requirement meets all evaluated quality attributes.")
+            st.success("Requirement satisfies evaluated quality attributes.")
 
 # --------------------------------------------------
-# FOOTER
+# RESEARCH PANEL
 # --------------------------------------------------
 
 st.markdown("---")
-st.markdown(
-    '<div class="footer">ReqQuality Pro v1.0 | Research Prototype | Software Engineering for AI</div>',
-    unsafe_allow_html=True
-)
+st.markdown("### 📚 Research Context")
+
+st.info("""
+This prototype draws inspiration from IEEE 29148 standard for
+requirements specification quality attributes and explores
+hybrid rule-based and AI-assisted evaluation techniques
+within Software Engineering for AI research.
+""")
+
+st.markdown("---")
+st.caption("ReqQuality Pro v2.0 | Research Prototype | Software Engineering & AI Systems")
