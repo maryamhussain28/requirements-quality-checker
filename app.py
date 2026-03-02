@@ -194,20 +194,20 @@ if run:
 
         colA, colB, colC, colD = st.columns(4)
 
-    with colA:
-        st.markdown(f"<span style='color:{executive_text_color}; font-weight:600;'>Quality Classification</span>", unsafe_allow_html=True)
-        st.markdown(f"<span style='color:{executive_text_color}; font-size:24px;'>{classification}</span>", unsafe_allow_html=True)
+        with colA:
+            st.markdown(f"<span style='color:{executive_text_color}; font-weight:600;'>Quality Classification</span>", unsafe_allow_html=True)
+            st.markdown(f"<span style='color:{executive_text_color}; font-size:24px;'>{classification}</span>", unsafe_allow_html=True)
 
-    with colB:
-        st.markdown(f"<span style='color:{executive_text_color}; font-weight:600;'>Risk Level</span>", unsafe_allow_html=True)
-        st.markdown(f"<span style='color:{executive_text_color}; font-size:24px;'>{risk}</span>", unsafe_allow_html=True)
+        with colB:
+            st.markdown(f"<span style='color:{executive_text_color}; font-weight:600;'>Risk Level</span>", unsafe_allow_html=True)
+            st.markdown(f"<span style='color:{executive_text_color}; font-size:24px;'>{risk}</span>", unsafe_allow_html=True)
 
-    with colC:
-        st.markdown(f"<span style='color:{executive_text_color}; font-weight:600;'>IEEE Compliance</span>", unsafe_allow_html=True)
-        st.markdown(f"<span style='color:{executive_text_color}; font-size:24px;'>{ieee_compliance}%</span>", unsafe_allow_html=True)
+        with colC:
+            st.markdown(f"<span style='color:{executive_text_color}; font-weight:600;'>IEEE Compliance</span>", unsafe_allow_html=True)
+            st.markdown(f"<span style='color:{executive_text_color}; font-size:24px;'>{ieee_compliance}%</span>", unsafe_allow_html=True)
 
-    with colD:
-        st.markdown(f"<span style='color:{executive_text_color}; font-weight:600;'>Recommendation</span>", unsafe_allow_html=True)
+        with colD:
+            st.markdown(f"<span style='color:{executive_text_color}; font-weight:600;'>Recommendation</span>", unsafe_allow_html=True)
         st.markdown(f"<span style='color:{executive_text_color}; font-size:24px;'>{recommendation}</span>", unsafe_allow_html=True)
 
         st.markdown(
