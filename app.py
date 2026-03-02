@@ -3,7 +3,7 @@ from checker import check_requirement
 import plotly.graph_objects as go
 
 # --------------------------------------------------
-# CONFIG
+# PAGE CONFIG
 # --------------------------------------------------
 
 st.set_page_config(
@@ -102,9 +102,10 @@ with st.sidebar:
     Research-driven evaluation system implementing:
 
     • IEEE 29148 Inspired Quality Mapping  
-    • Hybrid Rule + Semantic Signals  
-    • Multi-Dimensional Scoring  
-    • Real-Time Visualization  
+    • Rule-Based Validation  
+    • Hybrid Semantic Signals  
+    • Executive Decision Engine  
+    • Interactive Visualization  
     """)
 
     st.divider()
@@ -117,6 +118,7 @@ with st.sidebar:
     - Validation Layer  
     - Semantic Enrichment  
     - Scoring Engine  
+    - Executive Evaluation Layer  
     - Visualization Layer  
     """)
 
@@ -130,7 +132,7 @@ with st.sidebar:
         st.caption("No analyses yet.")
 
     st.divider()
-    st.caption("Version 5.0 | Research Prototype")
+    st.caption("Version 6.0 | Research Prototype")
 
 # --------------------------------------------------
 # HERO SECTION
@@ -140,7 +142,7 @@ st.markdown("""
 <div class="hero">
     <div class="main-title">ReqQuality Pro</div>
     <div class="subtitle">
-        AI-Enhanced Requirements Quality Evaluation Platform
+        AI-Enhanced Requirements Quality Evaluation & Decision Platform
     </div>
 </div>
 """, unsafe_allow_html=True)
@@ -175,13 +177,55 @@ if run:
         results, suggestions, score = check_requirement(requirement)
         st.session_state.history.append(requirement)
 
+        # --------------------------------------------------
+        # EXECUTIVE DECISION ENGINE
+        # --------------------------------------------------
+
+        if score >= 8:
+            classification = "Production-Ready"
+            risk = "Low"
+            recommendation = "Approve"
+            risk_color = "#22c55e"
+        elif score >= 5:
+            classification = "Acceptable with Revisions"
+            risk = "Medium"
+            recommendation = "Revise Before Approval"
+            risk_color = "#f59e0b"
+        else:
+            classification = "High Risk Requirement"
+            risk = "High"
+            recommendation = "Reject"
+            risk_color = "#ef4444"
+
+        ieee_compliance = int((score / 10) * 100)
+
         st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        st.markdown("## Executive Evaluation Summary")
+
+        colA, colB, colC, colD = st.columns(4)
+
+        colA.metric("Quality Classification", classification)
+        colB.metric("Risk Level", risk)
+        colC.metric("IEEE Compliance", f"{ieee_compliance}%")
+        colD.metric("Recommendation", recommendation)
+
+        st.markdown(
+            f'<div class="badge" style="background-color:{risk_color};color:white;">Overall Risk Level: {risk}</div>',
+            unsafe_allow_html=True
+        )
+
+        st.markdown("</div>", unsafe_allow_html=True)
+
+        # --------------------------------------------------
+        # QUALITY ATTRIBUTE BREAKDOWN
+        # --------------------------------------------------
+
         st.markdown("## Quality Attribute Breakdown")
 
-        colA, colB = st.columns(2)
+        col1, col2 = st.columns(2)
 
         for i, (category, issues) in enumerate(results.items()):
-            column = colA if i % 2 == 0 else colB
+            column = col1 if i % 2 == 0 else col2
             with column:
                 st.markdown(f"### {category}")
                 if issues:
@@ -190,7 +234,7 @@ if run:
                 else:
                     st.success("No major issues detected.")
 
-        st.markdown("</div>", unsafe_allow_html=True)
+        st.markdown("---")
 
         # --------------------------------------------------
         # SCORE GAUGE
@@ -259,7 +303,8 @@ if run:
 st.markdown("---")
 st.info("""
 This system operationalizes structured requirement quality evaluation 
-within Software Engineering for AI research and explores hybrid validation strategies.
+within Software Engineering for AI research and integrates 
+an executive-level decision support layer for requirement validation.
 """)
 
-st.caption("ReqQuality Pro | Advanced Research Interface")
+st.caption("ReqQuality Pro | Advanced Research & Decision Support Interface")
