@@ -181,6 +181,10 @@ if run:
         # EXECUTIVE DECISION ENGINE
         # --------------------------------------------------
 
+        # --------------------------------------------------
+# EXECUTIVE DECISION ENGINE
+# --------------------------------------------------
+
         if score >= 8:
             classification = "Production-Ready"
             risk = "Low"
@@ -199,22 +203,39 @@ if run:
 
         ieee_compliance = int((score / 10) * 100)
 
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
         st.markdown("## Executive Evaluation Summary")
 
         colA, colB, colC, colD = st.columns(4)
 
-        colA.metric("Quality Classification", classification)
-        colB.metric("Risk Level", risk)
-        colC.metric("IEEE Compliance", f"{ieee_compliance}%")
-        colD.metric("Recommendation", recommendation)
+        with colA:
+            st.metric("Quality Classification", classification)
+
+        with colB:
+            st.metric("Risk Level", risk)
+
+        with colC:
+            st.metric("IEEE Compliance", f"{ieee_compliance}%")
+
+        with colD:
+            st.metric("Recommendation", recommendation)
 
         st.markdown(
-            f'<div class="badge" style="background-color:{risk_color};color:white;">Overall Risk Level: {risk}</div>',
+            f"""
+            <div style="
+                margin-top:15px;
+                padding:10px 18px;
+                border-radius:25px;
+                background-color:{risk_color};
+                color:white;
+                font-weight:600;
+                display:inline-block;">
+                Overall Risk Level: {risk}
+            </div>
+            """,
             unsafe_allow_html=True
         )
 
-        st.markdown("</div>", unsafe_allow_html=True)
+        st.markdown("---")
 
         # --------------------------------------------------
         # QUALITY ATTRIBUTE BREAKDOWN
