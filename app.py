@@ -164,29 +164,62 @@ if run:
         # EXECUTIVE DECISION ENGINE
         # --------------------------------------------------
 
-        st.markdown("### Executive Evaluation Summary")
+        # --------------------------------------------------
+# EXECUTIVE DECISION ENGINE
+# --------------------------------------------------
 
-        
-        # --------------------------------------------st.markdown("### Executive Evaluation Summary")
+        if score >= 8:
+            classification = "Production-Ready"
+            risk = "Low"
+            recommendation = "Approve"
+            risk_color = "#22c55e"
+        elif score >= 5:
+            classification = "Acceptable with Revisions"
+            risk = "Medium"
+            recommendation = "Revise Before Approval"
+            risk_color = "#f59e0b"
+        else:
+            classification = "High Risk Requirement"
+            risk = "High"
+            recommendation = "Reject"
+            risk_color = "#ef4444"
+
+        ieee_compliance = int((score / 10) * 100)
+
+        st.markdown("## Executive Evaluation Summary")
 
         colA, colB, colC, colD = st.columns(4)
 
         with colA:
-            st.markdown("**Quality Classification**")
-            st.write(classification)
+            st.metric("Quality Classification", classification)
 
         with colB:
-            st.markdown("**Risk Level**")
-            st.write(risk)
+            st.metric("Risk Level", risk)
 
         with colC:
-            st.markdown("**IEEE Compliance**")
-            st.write(f"{ieee_compliance}%")
+            st.metric("IEEE Compliance", f"{ieee_compliance}%")
 
         with colD:
-            st.markdown("**Recommendation**")
-            st.write(recommendation)
-        # QUALITY BREAKDOWN
+            st.metric("Recommendation", recommendation)
+
+        st.markdown(
+            f"""
+            <div style="
+                margin-top:15px;
+                padding:10px 18px;
+                border-radius:25px;
+                background-color:{risk_color};
+                color:white;
+                font-weight:600;
+                display:inline-block;">
+                Overall Risk Level: {risk}
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+        st.markdown("---")
+                # QUALITY BREAKDOWN
         # --------------------------------------------------
 
         st.markdown("### Quality Attribute Breakdown")
