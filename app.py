@@ -19,14 +19,11 @@ st.set_page_config(
 if "dark_mode" not in st.session_state:
     st.session_state.dark_mode = False
 
-if "authenticated" not in st.session_state:
-    st.session_state.authenticated = False
-
 if "history" not in st.session_state:
     st.session_state.history = []
 
 # --------------------------------------------------
-# THEME SYSTEM (FUNCTIONAL)
+# THEME
 # --------------------------------------------------
 
 def apply_theme():
@@ -49,7 +46,7 @@ def apply_theme():
     }}
     .section-card {{
         padding: 22px;
-        border-radius: 16px;
+        border-radius: 14px;
         background-color: {card};
         border: 1px solid {border};
         margin-bottom: 20px;
@@ -86,29 +83,38 @@ with st.sidebar:
 
     st.divider()
 
-    auth_tabs = st.tabs(["Sign In", "Sign Up"])
+    st.markdown("### Platform Overview")
+    st.write("""
+    ReqQuality Pro is a research-oriented evaluation platform
+    inspired by IEEE 29148 requirements quality attributes.
 
-    with auth_tabs[0]:
-        email = st.text_input("Email")
-        password = st.text_input("Password", type="password")
-        if st.button("Login"):
-            st.session_state.authenticated = True
-
-    with auth_tabs[1]:
-        name = st.text_input("Full Name")
-        email_new = st.text_input("Email ")
-        password_new = st.text_input("Password ", type="password")
-        if st.button("Create Account"):
-            st.session_state.authenticated = True
+    The system integrates:
+    • Rule-based validation  
+    • AI-enhanced semantic signals  
+    • Multi-dimensional scoring  
+    • Interactive visualization  
+    """)
 
     st.divider()
 
-    st.markdown("### Platform Overview")
+    st.markdown("### Evaluation Dimensions")
     st.write("""
-    • IEEE 29148 Evaluation  
-    • Hybrid Rule + AI Signals  
-    • Interactive Dashboard  
-    • Research Prototype  
+    • Clarity  
+    • Unambiguity  
+    • Verifiability  
+    • Atomicity  
+    """)
+
+    st.divider()
+
+    st.markdown("### Model Architecture")
+    st.write("""
+    Modular pipeline separating:
+    - Preprocessing
+    - Structural validation
+    - Semantic enrichment
+    - Scoring synthesis
+    - Visualization layer
     """)
 
     st.divider()
@@ -118,18 +124,11 @@ with st.sidebar:
         for item in st.session_state.history[-5:]:
             st.write(f"• {item[:35]}...")
     else:
-        st.caption("No history yet.")
+        st.caption("No analyses performed yet.")
 
     st.divider()
 
-    st.markdown("### 🚀 Upgrade to Pro")
-    st.info("""
-    - Batch Requirement Analysis  
-    - Advanced Semantic Modeling  
-    - Document Upload Support  
-    - Exportable Reports  
-    """)
-    st.button("Request Pro Access")
+    st.caption("Version 4.0 | Research Prototype")
 
 # --------------------------------------------------
 # HEADER
@@ -186,8 +185,7 @@ if run:
 
         st.markdown("---")
 
-        # ---------------- GAUGE ----------------
-
+        # Gauge
         fig = go.Figure(go.Indicator(
             mode="gauge+number",
             value=score * 10,
@@ -205,8 +203,6 @@ if run:
 
         st.plotly_chart(fig, use_container_width=True)
 
-        # ---------------- CONFIDENCE BADGE ----------------
-
         confidence = 85 + score
         badge_color = "#10b981" if confidence > 90 else "#f59e0b"
 
@@ -217,8 +213,7 @@ if run:
 
         st.markdown("---")
 
-        # ---------------- IEEE GRID ----------------
-
+        # IEEE Grid
         st.markdown("## IEEE 29148 Attribute Mapping")
 
         grid_cols = st.columns(4)
@@ -232,8 +227,6 @@ if run:
 
         st.markdown("---")
 
-        # ---------------- SUGGESTIONS ----------------
-
         st.markdown("## Improvement Recommendations")
 
         if suggestions:
@@ -243,15 +236,14 @@ if run:
             st.success("Requirement satisfies evaluated quality attributes.")
 
 # --------------------------------------------------
-# RESEARCH PANEL
+# FOOTER
 # --------------------------------------------------
 
 st.markdown("---")
-st.markdown("### Research Context")
-
 st.info("""
-This platform operationalizes requirement quality principles inspired by IEEE 29148
-and explores hybrid AI-assisted validation approaches within Software Engineering for AI research.
+This prototype operationalizes requirement quality evaluation 
+within Software Engineering for AI research and explores 
+hybrid validation strategies inspired by IEEE 29148.
 """)
 
-st.caption("ReqQuality Pro v4.0 | Research Prototype | Software Engineering & AI Systems")
+st.caption("ReqQuality Pro | Academic Research Tool")
