@@ -179,7 +179,7 @@ if run:
             recommendation = "Revise Before Approval"
             risk_color = "#f59e0b"
         else:
-            classification = "High Risk Requirement"
+            classification = "High Risk"
             risk = "High"
             recommendation = "Reject"
             risk_color = "#ef4444"
@@ -209,7 +209,7 @@ if run:
                 padding:10px 18px;
                 border-radius:25px;
                 background-color:{risk_color};
-                color:white;
+                color:brown;
                 font-weight:600;
                 display:inline-block;">
                 Overall Risk Level: {risk}
