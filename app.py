@@ -29,19 +29,22 @@ if "history" not in st.session_state:
 def apply_theme():
     if st.session_state.dark_mode:
         bg = "#0b1120"
-        card = "rgba(30, 41, 59, 0.7)"
+        card = "rgba(30, 41, 59, 0.65)"
         border = "#334155"
         hero_gradient = "linear-gradient(90deg,#0f172a,#1e293b)"
+        text_color = "#f1f5f9"
     else:
         bg = "#f8fafc"
-        card = "rgba(255,255,255,0.7)"
+        card = "rgba(255,255,255,0.85)"
         border = "#e2e8f0"
         hero_gradient = "linear-gradient(90deg,#2563eb,#1d4ed8)"
+        text_color = "#0f172a"
 
     st.markdown(f"""
     <style>
     .stApp {{
         background-color: {bg};
+        color: {text_color};
     }}
 
     .hero {{
@@ -56,19 +59,18 @@ def apply_theme():
         padding: 25px;
         border-radius: 18px;
         background: {card};
-        backdrop-filter: blur(10px);
         border: 1px solid {border};
         margin-bottom: 25px;
     }}
 
     .main-title {{
-        font-size: 46px;
+        font-size: 42px;
         font-weight: 700;
     }}
 
     .subtitle {{
         font-size: 18px;
-        opacity: 0.85;
+        opacity: 0.9;
     }}
 
     .badge {{
@@ -78,23 +80,10 @@ def apply_theme():
         font-size: 14px;
         display: inline-block;
     }}
-
-    /* -------- FIX METRIC SIZE -------- */
-
-    div[data-testid="stMetricValue"] {{
-        font-size: 26px !important;
-        font-weight: 600 !important;
-    }}
-
-    div[data-testid="stMetricLabel"] {{
-        font-size: 13px !important;
-        opacity: 0.7;
-    }}
-
     </style>
     """, unsafe_allow_html=True)
 
-    apply_theme()
+apply_theme()
 
 # --------------------------------------------------
 # SIDEBAR
@@ -109,40 +98,24 @@ with st.sidebar:
 
     st.markdown("### Platform Overview")
     st.write("""
-    Research-driven evaluation system implementing:
-
     • IEEE 29148 Inspired Quality Mapping  
     • Rule-Based Validation  
-    • Hybrid Semantic Signals  
     • Executive Decision Engine  
     • Interactive Visualization  
     """)
 
     st.divider()
 
-    st.markdown("### Architecture")
-    st.write("""
-    Modular separation of:
-
-    - Preprocessing  
-    - Validation Layer  
-    - Semantic Enrichment  
-    - Scoring Engine  
-    - Executive Evaluation Layer  
-    - Visualization Layer  
-    """)
-
-    st.divider()
-
     st.markdown("### Recent Analyses")
+
     if st.session_state.history:
         for item in st.session_state.history[-5:]:
-            st.write(f"• {item[:35]}...")
+            st.write(f"• {item[:40]}...")
     else:
         st.caption("No analyses yet.")
 
     st.divider()
-    st.caption("Version 6.0 | Research Prototype")
+    st.caption("Version 7.0 | Research Prototype")
 
 # --------------------------------------------------
 # HERO SECTION
@@ -152,7 +125,7 @@ st.markdown("""
 <div class="hero">
     <div class="main-title">ReqQuality Pro</div>
     <div class="subtitle">
-        AI-Enhanced Requirements Quality Evaluation & Decision Platform
+        Enterprise Requirements Quality Evaluation & Decision Support Platform
     </div>
 </div>
 """, unsafe_allow_html=True)
@@ -166,7 +139,7 @@ col1, col2 = st.columns([3,1])
 with col1:
     requirement = st.text_area(
         "Enter Requirement Statement",
-        height=160,
+        height=150,
         placeholder="The system shall respond within 2 seconds to login requests."
     )
 
@@ -191,10 +164,6 @@ if run:
         # EXECUTIVE DECISION ENGINE
         # --------------------------------------------------
 
-        # --------------------------------------------------
-# EXECUTIVE DECISION ENGINE
-# --------------------------------------------------
-
         if score >= 8:
             classification = "Production-Ready"
             risk = "Low"
@@ -213,65 +182,42 @@ if run:
 
         ieee_compliance = int((score / 10) * 100)
 
-        st.markdown("## Executive Evaluation Summary")
+        st.markdown("### Executive Evaluation Summary")
+
+        card_bg = "rgba(255,255,255,0.06)" if st.session_state.dark_mode else "rgba(0,0,0,0.04)"
 
         st.markdown(f"""
         <div style="
             display:flex;
-            justify-content:space-between;
             gap:20px;
-            margin-top:10px;
+            margin-top:15px;
             flex-wrap:wrap;
         ">
 
-            <div style="
-                flex:1;
-                min-width:200px;
-                padding:18px;
-                border-radius:14px;
-                background:rgba(0,0,0,0.05);
-            ">
-                <div style="font-size:12px; opacity:0.6;">Quality Classification</div>
-                <div style="font-size:20px; font-weight:600; margin-top:4px;">
+            <div style="flex:1; min-width:220px; padding:22px; border-radius:16px; background:{card_bg};">
+                <div style="font-size:12px; opacity:0.65;">Quality Classification</div>
+                <div style="font-size:18px; font-weight:600; margin-top:6px;">
                     {classification}
                 </div>
             </div>
 
-            <div style="
-                flex:1;
-                min-width:200px;
-                padding:18px;
-                border-radius:14px;
-                background:rgba(0,0,0,0.05);
-            ">
-                <div style="font-size:12px; opacity:0.6;">Risk Level</div>
-                <div style="font-size:20px; font-weight:600; margin-top:4px;">
+            <div style="flex:1; min-width:220px; padding:22px; border-radius:16px; background:{card_bg};">
+                <div style="font-size:12px; opacity:0.65;">Risk Level</div>
+                <div style="font-size:18px; font-weight:600; margin-top:6px;">
                     {risk}
                 </div>
             </div>
 
-            <div style="
-                flex:1;
-                min-width:200px;
-                padding:18px;
-                border-radius:14px;
-                background:rgba(0,0,0,0.05);
-            ">
-                <div style="font-size:12px; opacity:0.6;">IEEE Compliance</div>
-                <div style="font-size:20px; font-weight:600; margin-top:4px;">
+            <div style="flex:1; min-width:220px; padding:22px; border-radius:16px; background:{card_bg};">
+                <div style="font-size:12px; opacity:0.65;">IEEE Compliance</div>
+                <div style="font-size:18px; font-weight:600; margin-top:6px;">
                     {ieee_compliance}%
                 </div>
             </div>
 
-            <div style="
-                flex:1;
-                min-width:200px;
-                padding:18px;
-                border-radius:14px;
-                background:rgba(0,0,0,0.05);
-            ">
-                <div style="font-size:12px; opacity:0.6;">Recommendation</div>
-                <div style="font-size:20px; font-weight:600; margin-top:4px;">
+            <div style="flex:1; min-width:220px; padding:22px; border-radius:16px; background:{card_bg};">
+                <div style="font-size:12px; opacity:0.65;">Recommendation</div>
+                <div style="font-size:18px; font-weight:600; margin-top:6px;">
                     {recommendation}
                 </div>
             </div>
@@ -280,35 +226,35 @@ if run:
         """, unsafe_allow_html=True)
 
         st.markdown(
-                    f"""
-                    <div style="
-                        margin-top:15px;
-                        padding:10px 18px;
-                        border-radius:25px;
-                        background-color:{risk_color};
-                        color:white;
-                        font-weight:600;
-                        display:inline-block;">
-                        Overall Risk Level: {risk}
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
+            f"""
+            <div style="
+                margin-top:18px;
+                padding:10px 20px;
+                border-radius:30px;
+                background-color:{risk_color};
+                color:white;
+                font-weight:600;
+                display:inline-block;">
+                Overall Risk Level: {risk}
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
         st.markdown("---")
-        
+
         # --------------------------------------------------
-        # QUALITY ATTRIBUTE BREAKDOWN
+        # QUALITY BREAKDOWN
         # --------------------------------------------------
 
-        st.markdown("## Quality Attribute Breakdown")
+        st.markdown("### Quality Attribute Breakdown")
 
         col1, col2 = st.columns(2)
 
         for i, (category, issues) in enumerate(results.items()):
             column = col1 if i % 2 == 0 else col2
             with column:
-                st.markdown(f"### {category}")
+                st.markdown(f"**{category}**")
                 if issues:
                     for issue in issues:
                         st.error(issue)
@@ -350,26 +296,7 @@ if run:
             unsafe_allow_html=True
         )
 
-        # --------------------------------------------------
-        # IEEE GRID
-        # --------------------------------------------------
-
-        st.markdown("## IEEE 29148 Attribute Mapping")
-
-        grid_cols = st.columns(4)
-        attributes = ["Clarity", "Unambiguity", "Verifiability", "Atomicity"]
-
-        for i, attr in enumerate(attributes):
-            if results[attr]:
-                grid_cols[i].error(attr)
-            else:
-                grid_cols[i].success(attr)
-
-        # --------------------------------------------------
-        # SUGGESTIONS
-        # --------------------------------------------------
-
-        st.markdown("## Improvement Recommendations")
+        st.markdown("### Improvement Recommendations")
 
         if suggestions:
             for s in suggestions:
@@ -382,10 +309,4 @@ if run:
 # --------------------------------------------------
 
 st.markdown("---")
-st.info("""
-This system operationalizes structured requirement quality evaluation 
-within Software Engineering for AI research and integrates 
-an executive-level decision support layer for requirement validation.
-""")
-
-st.caption("ReqQuality Pro | Advanced Research & Decision Support Interface")
+st.caption("ReqQuality Pro | Enterprise Requirements Decision Support Interface")
