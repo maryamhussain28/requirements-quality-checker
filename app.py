@@ -169,14 +169,14 @@ if run:
 # --------------------------------------------------
 
         if score >= 8:
-            classification = "Production-Ready"
+            classification = "Ready"
             risk = "Low"
             recommendation = "Approve"
             risk_color = "#22c55e"
         elif score >= 5:
-            classification = "Acceptable with Revisions"
+            classification = "Acceptable"
             risk = "Medium"
-            recommendation = "Revise Before Approval"
+            recommendation = "Revision Needed"
             risk_color = "#f59e0b"
         else:
             classification = "High Risk"
