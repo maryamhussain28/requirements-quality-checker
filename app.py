@@ -99,9 +99,9 @@ with st.sidebar:
     st.markdown("### Platform Overview")
     st.write("""
     • IEEE 29148 Inspired Quality Mapping  
-    • Rule-Based Validation  
+    • Transformer Based Validation  
     • Executive Decision Engine  
-    • Interactive Visualization  
+    • Real time Visualized Summary  
     """)
 
     st.divider()
