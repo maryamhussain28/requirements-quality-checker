@@ -23,20 +23,22 @@ if "history" not in st.session_state:
     st.session_state.history = []
 
 # --------------------------------------------------
-# THEME
+# THEME ENGINE
 # --------------------------------------------------
 
 def apply_theme():
     if st.session_state.dark_mode:
-        bg = "#0f172a"
-        card = "#1e293b"
+        bg = "#0b1120"
+        card = "rgba(30, 41, 59, 0.7)"
         text = "#f1f5f9"
         border = "#334155"
+        hero_gradient = "linear-gradient(90deg,#0f172a,#1e293b)"
     else:
         bg = "#f8fafc"
-        card = "#ffffff"
+        card = "rgba(255,255,255,0.7)"
         text = "#0f172a"
-        border = "#e5e7eb"
+        border = "#e2e8f0"
+        hero_gradient = "linear-gradient(90deg,#2563eb,#1d4ed8)"
 
     st.markdown(f"""
     <style>
@@ -44,26 +46,39 @@ def apply_theme():
         background-color: {bg};
         color: {text};
     }}
-    .section-card {{
-        padding: 22px;
-        border-radius: 14px;
-        background-color: {card};
-        border: 1px solid {border};
-        margin-bottom: 20px;
+
+    .hero {{
+        padding: 50px;
+        border-radius: 18px;
+        background: {hero_gradient};
+        color: white;
+        margin-bottom: 30px;
     }}
+
+    .glass-card {{
+        padding: 25px;
+        border-radius: 18px;
+        background: {card};
+        backdrop-filter: blur(10px);
+        border: 1px solid {border};
+        margin-bottom: 25px;
+    }}
+
     .main-title {{
-        font-size: 42px;
+        font-size: 46px;
         font-weight: 700;
     }}
+
     .subtitle {{
         font-size: 18px;
-        color: #64748b;
+        opacity: 0.85;
     }}
+
     .badge {{
-        padding: 6px 14px;
-        border-radius: 20px;
-        font-size: 14px;
+        padding: 8px 18px;
+        border-radius: 30px;
         font-weight: 600;
+        font-size: 14px;
         display: inline-block;
     }}
     </style>
@@ -78,43 +93,31 @@ apply_theme()
 with st.sidebar:
 
     st.markdown("## ReqQuality Pro")
-
     st.toggle("🌙 Dark Mode", key="dark_mode")
 
     st.divider()
 
     st.markdown("### Platform Overview")
     st.write("""
-    ReqQuality Pro is a research-oriented evaluation platform
-    inspired by IEEE 29148 requirements quality attributes.
+    Research-driven evaluation system implementing:
 
-    The system integrates:
-    • Rule-based validation  
-    • AI-enhanced semantic signals  
-    • Multi-dimensional scoring  
-    • Interactive visualization  
+    • IEEE 29148 Inspired Quality Mapping  
+    • Hybrid Rule + Semantic Signals  
+    • Multi-Dimensional Scoring  
+    • Real-Time Visualization  
     """)
 
     st.divider()
 
-    st.markdown("### Evaluation Dimensions")
+    st.markdown("### Architecture")
     st.write("""
-    • Clarity  
-    • Unambiguity  
-    • Verifiability  
-    • Atomicity  
-    """)
+    Modular separation of:
 
-    st.divider()
-
-    st.markdown("### Model Architecture")
-    st.write("""
-    Modular pipeline separating:
-    - Preprocessing
-    - Structural validation
-    - Semantic enrichment
-    - Scoring synthesis
-    - Visualization layer
+    - Preprocessing  
+    - Validation Layer  
+    - Semantic Enrichment  
+    - Scoring Engine  
+    - Visualization Layer  
     """)
 
     st.divider()
@@ -124,23 +127,26 @@ with st.sidebar:
         for item in st.session_state.history[-5:]:
             st.write(f"• {item[:35]}...")
     else:
-        st.caption("No analyses performed yet.")
+        st.caption("No analyses yet.")
 
     st.divider()
-
-    st.caption("Version 4.0 | Research Prototype")
-
-# --------------------------------------------------
-# HEADER
-# --------------------------------------------------
-
-st.markdown('<div class="main-title">ReqQuality Pro</div>', unsafe_allow_html=True)
-st.markdown('<div class="subtitle">AI-Enhanced Requirements Quality Evaluation Platform</div>', unsafe_allow_html=True)
-
-st.markdown("---")
+    st.caption("Version 5.0 | Research Prototype")
 
 # --------------------------------------------------
-# INPUT
+# HERO SECTION
+# --------------------------------------------------
+
+st.markdown("""
+<div class="hero">
+    <div class="main-title">ReqQuality Pro</div>
+    <div class="subtitle">
+        AI-Enhanced Requirements Quality Evaluation Platform
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
+# --------------------------------------------------
+# INPUT SECTION
 # --------------------------------------------------
 
 col1, col2 = st.columns([3,1])
@@ -169,6 +175,7 @@ if run:
         results, suggestions, score = check_requirement(requirement)
         st.session_state.history.append(requirement)
 
+        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
         st.markdown("## Quality Attribute Breakdown")
 
         colA, colB = st.columns(2)
@@ -183,37 +190,45 @@ if run:
                 else:
                     st.success("No major issues detected.")
 
-        st.markdown("---")
+        st.markdown("</div>", unsafe_allow_html=True)
 
-        # Gauge
+        # --------------------------------------------------
+        # SCORE GAUGE
+        # --------------------------------------------------
+
         fig = go.Figure(go.Indicator(
             mode="gauge+number",
             value=score * 10,
             number={'suffix': "%"},
             gauge={
                 'axis': {'range': [0, 100]},
-                'bar': {'color': "#2563eb"},
+                'bar': {'color': "#22c55e"},
                 'steps': [
                     {'range': [0, 40], 'color': "#ef4444"},
                     {'range': [40, 70], 'color': "#f59e0b"},
-                    {'range': [70, 100], 'color': "#10b981"}
+                    {'range': [70, 100], 'color': "#22c55e"}
                 ],
             }
         ))
 
         st.plotly_chart(fig, use_container_width=True)
 
+        # --------------------------------------------------
+        # CONFIDENCE BADGE
+        # --------------------------------------------------
+
         confidence = 85 + score
-        badge_color = "#10b981" if confidence > 90 else "#f59e0b"
+        badge_color = "#22c55e" if confidence > 90 else "#f59e0b"
 
         st.markdown(
             f'<div class="badge" style="background-color:{badge_color};color:white;">Model Confidence: {confidence}%</div>',
             unsafe_allow_html=True
         )
 
-        st.markdown("---")
+        # --------------------------------------------------
+        # IEEE GRID
+        # --------------------------------------------------
 
-        # IEEE Grid
         st.markdown("## IEEE 29148 Attribute Mapping")
 
         grid_cols = st.columns(4)
@@ -225,7 +240,9 @@ if run:
             else:
                 grid_cols[i].success(attr)
 
-        st.markdown("---")
+        # --------------------------------------------------
+        # SUGGESTIONS
+        # --------------------------------------------------
 
         st.markdown("## Improvement Recommendations")
 
@@ -241,9 +258,8 @@ if run:
 
 st.markdown("---")
 st.info("""
-This prototype operationalizes requirement quality evaluation 
-within Software Engineering for AI research and explores 
-hybrid validation strategies inspired by IEEE 29148.
+This system operationalizes structured requirement quality evaluation 
+within Software Engineering for AI research and explores hybrid validation strategies.
 """)
 
-st.caption("ReqQuality Pro | Academic Research Tool")
+st.caption("ReqQuality Pro | Advanced Research Interface")
