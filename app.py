@@ -94,7 +94,7 @@ def apply_theme():
     </style>
     """, unsafe_allow_html=True)
 
-#apply_theme()
+    apply_theme()
 
 # --------------------------------------------------
 # SIDEBAR
