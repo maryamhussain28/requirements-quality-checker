@@ -208,7 +208,7 @@ if run:
 
         with colD:
             st.markdown(f"<span style='color:{executive_text_color}; font-weight:600;'>Recommendation</span>", unsafe_allow_html=True)
-        st.markdown(f"<span style='color:{executive_text_color}; font-size:24px;'>{recommendation}</span>", unsafe_allow_html=True)
+            st.markdown(f"<span style='color:{executive_text_color}; font-size:24px;'>{recommendation}</span>", unsafe_allow_html=True)
 
         st.markdown(
             f"""
