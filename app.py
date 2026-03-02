@@ -215,19 +215,69 @@ if run:
 
         st.markdown("## Executive Evaluation Summary")
 
-        colA, colB, colC, colD = st.columns(4)
+        st.markdown(f"""
+<div style="
+    display:flex;
+    justify-content:space-between;
+    gap:20px;
+    margin-top:10px;
+    flex-wrap:wrap;
+">
 
-        with colA:
-            st.metric("Quality Classification", classification)
+    <div style="
+        flex:1;
+        min-width:200px;
+        padding:18px;
+        border-radius:14px;
+        background:rgba(0,0,0,0.05);
+    ">
+        <div style="font-size:12px; opacity:0.6;">Quality Classification</div>
+        <div style="font-size:20px; font-weight:600; margin-top:4px;">
+            {classification}
+        </div>
+    </div>
 
-        with colB:
-            st.metric("Risk Level", risk)
+    <div style="
+        flex:1;
+        min-width:200px;
+        padding:18px;
+        border-radius:14px;
+        background:rgba(0,0,0,0.05);
+    ">
+        <div style="font-size:12px; opacity:0.6;">Risk Level</div>
+        <div style="font-size:20px; font-weight:600; margin-top:4px;">
+            {risk}
+        </div>
+    </div>
 
-        with colC:
-            st.metric("IEEE Compliance", f"{ieee_compliance}%")
+    <div style="
+        flex:1;
+        min-width:200px;
+        padding:18px;
+        border-radius:14px;
+        background:rgba(0,0,0,0.05);
+    ">
+        <div style="font-size:12px; opacity:0.6;">IEEE Compliance</div>
+        <div style="font-size:20px; font-weight:600; margin-top:4px;">
+            {ieee_compliance}%
+        </div>
+    </div>
 
-        with colD:
-            st.metric("Recommendation", recommendation)
+    <div style="
+        flex:1;
+        min-width:200px;
+        padding:18px;
+        border-radius:14px;
+        background:rgba(0,0,0,0.05);
+    ">
+        <div style="font-size:12px; opacity:0.6;">Recommendation</div>
+        <div style="font-size:20px; font-weight:600; margin-top:4px;">
+            {recommendation}
+        </div>
+    </div>
+
+</div>
+""", unsafe_allow_html=True)
 
         st.markdown(
             f"""
